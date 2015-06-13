@@ -7,11 +7,16 @@ var
 	Panels = require('moonstone/Panels'),
 	Panel = require('moonstone/Panel'),
 	IconButton = require('moonstone/IconButton'),
-	Button = require('moonstone/Button');
+	InputDecorator = require('moonstone/InputDecorator'),
+	Divider = require('moonstone/Divider'),
+	BodyText = require('moonstone/BodyText'),
+	Scroller = require('moonstone/Scroller'),
+	Icon = require('moonstone/Icon'),
+	Input = require('moonstone/Input');
 
 var
-	Constants = require('./Constants'),
-	MyStore = require('./MyStore');
+	actionConstants = require('../data/actionConstants'),
+	actionCreator = require('../actions/actionCreator');
 
 module.exports = kind({
 	name: "myapp.MainView",
@@ -21,15 +26,26 @@ module.exports = kind({
 	components: [
 		{
 			kind: Panel,
-			title: "Hello World",
+			title: "Flux Sample",
 			headerComponents: [
+				{ kind: InputDecorator, components: [
+					{kind: Input, placeholder: 'Search term', onchange: 'handleChange'},
+					{kind: Icon, icon: 'search'}
+				]},
 				{kind: IconButton, src: "assets/icon-like.png"}
 			],
 			components: [
-				{kind: Button, content: "Update1", ontap: "tapHandler"},
-				{kind: Button, content: "Update2", ontap: "tapHandler"},
-				{kind: Button, content: "Update3", ontap: "tapHandler"},
-				{name: "result", content: "Nothing"}
+				{ kind:Scroller, fit: true, components:[
+					{ tag: 'br'},
+					{ kind: Divider, content: 'Title' },
+					{ name: 'title', kind: BodyText, allowHTML: true, content: ''},
+					{ kind: Divider, content: 'URL' },
+					{ name: 'url', kind: BodyText, allowHtml: true, content: ''},
+					{ kind: Divider, content: 'Publish Date' },
+					{ name: 'pubDate', kind: BodyText, allowHtml: true, content: ''},
+					{ kind: Divider, content: 'Description' },
+					{ name: 'desc', kind: BodyText, allowHtml: true, content: ''},
+				]},
 			]
 		}
 	],
@@ -44,21 +60,20 @@ module.exports = kind({
 		this.app.store.on('change', this._update);
 	},
 
-	update: function(sender, ev, args) {
-		if(args.fooNode) {
-			this.$.result.set('content', args.fooNode);
-		}
+	update: function(sender, ev) {
+
+		var data = sender.getData();
+
+		this.$.title.set('content', data[0].title);
+		this.$.url.set('content', data[0].link);
+		this.$.pubDate.set('content', data[0].pubDate);
+		this.$.desc.set('content', data[0].description);
 	},
 
-	tapHandler: function(inSender, inEvent) {
-		FluxDispatcher.notify(
-			this.app.store.id,
-			{
-				actionType: Constants.myAction,
-				payload: {
-					'fooNode': inSender.content + ' button is clicked'
-				}
-			}
-		)
-	},
+	handleChange: function(inSender, inEvent) {
+		console.log('Input Changed....');
+
+		// Fetch again with the given value via action creator
+		actionCreator.fetch(this.app.store, inSender.value);
+	}
 });
