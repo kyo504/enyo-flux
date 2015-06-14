@@ -17,7 +17,7 @@ var
 var
 	MainView = require('./views/MainView'),
 	actionCreator = require('./actions/actionCreator'),
-	CoreStore = require('./store/CoreStore');
+	WebStore = require('./stores/WebStore');
 
 module.exports = kind({
 	name: "myapp.Application",
@@ -25,7 +25,7 @@ module.exports = kind({
 	view: MainView,
 
 	create: function() {
-		this.store = new CoreStore();
+		this.store = WebStore;
 
 		this.inherited(arguments);
 

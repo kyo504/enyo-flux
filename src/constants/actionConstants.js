@@ -1,4 +1,9 @@
 module.exports = {
-	FETCH: 'FETCH',
-	SET_DATA: 'SET_DATA',
+
+	ActionType: {
+		FETCH: 'FETCH',
+		UPDATE: 'UPDATE',
+		SET_DATA: 'SET_DATA'
+	}
+	
 };

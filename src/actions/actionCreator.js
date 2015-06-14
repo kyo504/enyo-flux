@@ -7,16 +7,16 @@ var
 	actionConstants = require('../constants/actionConstants');
 
 // What is this for? Is this scoped to this file?
-Source.create({kind: JsonpSource, name: "DaumSource"});
+Source.create({kind: JsonpSource, name: "SearchSource"});
 
 module.exports = {
 
-	source: 'DaumSource',
+	source: 'SearchSource',
 
-	fetch: function(store, query) {
+	fetch: function(store, searchType, searchQuery) {
 
 		var opts = {};
-		opts.url = "https://apis.daum.net/search/web";
+		opts.url = "https://apis.daum.net/search/" + searchType;
 		opts.success = this._success.bind(this, store);
 		opts.error = this._error.bind(this, store);
 
@@ -24,8 +24,8 @@ module.exports = {
 		opts.params = {};
 		opts.params.apikey = '63a19d5e0d7de47e398fcaf2b4d5f4f51723cd18';
 		opts.params.output = 'json';
-		opts.params.q = query;
-
+		opts.params.q = searchQuery;
+	
 		// What is the purpose of pending??
 		FluxDispatcher.pending[store.id] = true;
 		Source.execute('fetch', this, opts);
@@ -37,7 +37,7 @@ module.exports = {
 		console.log("Success...");
 
 		FluxDispatcher.notify(store.id, {
-			actionType: actionConstants.FETCH,
+			actionType: actionConstants.ActionType.FETCH,
 			payload: res && res.channel && res.channel.item
 		})		
 	},

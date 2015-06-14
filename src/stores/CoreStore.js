@@ -6,7 +6,7 @@ var
 	FluxDispatcher = require('enyo/FluxDispatcher');
 
 var
-	actionConstants = require('../data/actionConstants');
+	actionConstants = require('../constants/actionConstants');
 
 module.exports = kind({
 	name: 'myapp.FluxStore',
@@ -35,21 +35,4 @@ module.exports = kind({
 			this._data = {};
 		};
 	}),
-
-	update: function(action) {
-		switch (action.actionType) {
-			case actionConstants.FETCH:
-				this._data = action.payload;
-				this.emit('change');
-				break;
-		}
-	},
-
-	/**
-	 * [getData description]
-	 * @return {[type]} [description]
-	 */
-	getData: function() {
-		return this._data;
-	}	
 });
