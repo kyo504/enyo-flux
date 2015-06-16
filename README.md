@@ -22,5 +22,15 @@ Store가 스스로 업데이트하도록 하는 것은 일반적으로 MVC 애�
 
 <img src="https://github.com/facebook/flux/blob/master/docs/img/flux-diagram-white-background.png" style="width: 100%;" />
 
-### 왜 Dispatcher가 필요한
+### 왜 Dispatcher가 필요한가
+
+애플리케이션의 사이즈 커짐에 따라 서로 다른 Store간의 의존성은 늘어난다. Store A는 스스로를 업데이트하기 위해서 Store B가 불가피하게 필요하게 될 것이고 그래야 Store A는 스스로를 업데이트 하는 방법을 알 수 있다. Dispatcher는 Store B를 위한 callback을 실행할 수 있도록 하고 Store A로 진행하기 전에 해당 callback을 끝낸다. 이 의존성을  내새우기 위해서는 store가 dispatcher에게 "나는 이 action을 처리하기 위해서 Store B를 기다려야한다"라 말할 수 있어야 한다. Dispatcher는 기능을 waitFor() 함수를 통해서 전달한다.
+
+dispatcher() 함수는 callback을 통해서 간단하고 동기적인 반복 수행을 순차적으로 각 callback을 수행함으로서 제공한다. waitFor()가 callback 중 하나와 만나게 되면 해당 callback의 수행은 멈추고 의존성에 대한 새로운 반복 사이클을 제공한다. 전체 의존성이 만족되면 원래 callback이 기존 작업을 계속 수행하게 됩니다.
+
+더 나아가 waitFor() 함수는 동일한 store의 callback 안에서 서로 다른 action에 대해서 다른 방법으로 사용될 수 있습니다. 예를 들면 Store A가 Store B를 기다려야 합니다. 하지만 다른 경우 Store A가 Store C를 기다려야 할 수도 있습니다. 특정 Action에 대한 Code Block안에서 waitFor()를 사용하는 것은 우리가 이러한 의존성에 대한 세밀 제어를 할 수 있도록 합니다.
+
+하지만 Circular 의존성이 있다면 문제가 됩니다. 즉, Store A가 Store B를 기다려야 하고 Store B가 Store A를 기다려야 한다면 무한 루프 빠지게 됩니다. 현재 버전의 Flux에서 Dispatcher는 이를 문제가 발생 때 개발자에게 경고를 전달함으로써 미연에 방지하도록 합니다. 이 경우에 개발자는 세 번째 Store를 만들어서 Circular 의존성을 해결할 수 있습니다.
+
+## Enyo에서는 Flux를 어떻게 이용할까
 
