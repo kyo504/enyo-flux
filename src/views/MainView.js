@@ -103,7 +103,10 @@ module.exports = kind({
 		//this.subscriptionID = FluxDispatcher.subscribe(this.app.store.id, utils.bind(this, this.update));
 
 		this._update = this.bindSafely(this.update);
-		this.app.store.on('change', this._update);
+		//this.app.store.on('change', this._update);
+		WebStore.on('change', this._update);
+		ImageStore.on('change', this._update);
+		BookStore.on('change', this._update);
 
 		this.$.scroller.createComponent(webContainer, {owner: this});
 	},
@@ -144,8 +147,23 @@ module.exports = kind({
 		console.log('Input Changed....');
 
 		var type = this.$.searchType.getActive().content.toLowerCase();
+		var currentStore;
 
 		// Fetch again with the given value via action creator
+		switch(this.$.searchType.getActive().content) {
+			case "Web":
+	 			currentStore = WebStore; 
+				break;
+			case "Image":
+				currentStore = ImageStore;
+				break;
+			case "Book":
+				currentStore = BookStore;
+				break;
+			default:
+				currentStore = WebStore;
+		}
+
 		actionCreator.fetch(this.app.store, type, inSender.value);
 	},
 
@@ -158,23 +176,15 @@ module.exports = kind({
 		switch(inSender.getActive().content) {
 			case "Web":
 	 			containerType = webContainer; 
-	 			this.app.store = WebStore;
-				this.app.store.on('change', this._update);
 				break;
 			case "Image":
 				containerType = imageContainer;
-	 			this.app.store = ImageStore;
-				this.app.store.on('change', this._update);
 				break;
 			case "Book":
 				containerType = bookContainer;
-	 			this.app.store = BookStore;
-				this.app.store.on('change', this._update);
 				break;
 			default:
 				containerType = webContainer;
-	 			this.app.store = WebStore;
-				this.app.store.on('change', this._update);
 		}
 
 		this.$.scroller.createComponent(containerType, {owner: this}).render();
