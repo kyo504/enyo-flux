@@ -48,6 +48,5 @@ module.exports = {
 
 	setData: function(store, name, data) {
 		console.log("Set Data...");
-
 	}
 }

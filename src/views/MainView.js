@@ -27,18 +27,18 @@ var
 
 var
 	webContainer = { name: "container", components:[
-						{ kind: Divider, content: 'Title' },
-						{ name: 'title', kind: BodyText, content: ''},
-						{ kind: Divider, content: 'URL' },
-						{ name: 'url', kind: BodyText, content: ''},
-						{ kind: Divider, content: 'Publish Date' },
-						{ name: 'pubDate', kind: BodyText, content: ''},
-						{ kind: Divider, content: 'Description' },
-						{ name: 'desc', kind: BodyText, content: ''},
-					]};
+		{ kind: Divider, content: 'Title' },
+		{ name: 'title', kind: BodyText, content: ''},
+		{ kind: Divider, content: 'URL' },
+		{ name: 'url', kind: BodyText, content: ''},
+		{ kind: Divider, content: 'Publish Date' },
+		{ name: 'pubDate', kind: BodyText, content: ''},
+		{ kind: Divider, content: 'Description' },
+		{ name: 'desc', kind: BodyText, content: ''},
+	]};
 	imageContainer = { name: "container", components:[
 		{kind:FittableColumns, components: [
-			{ name: "thumbnail", kind: Image, style: "width:200px;" },
+			{ name: "thumbnail", kind: Image, sizing: 'cover', style: "width:300px; height:300px" },
 			{ fit: true, components:[
 				{ kind: Divider, content: 'Title' },
 				{ name: 'title', kind: BodyText, content: ''},
@@ -51,7 +51,7 @@ var
 	]};
 	bookContainer = { name: "container", components:[
 		{kind:FittableColumns, components: [
-			{ name: "cover", kind: Image, style: "width:200px;" },
+			{ name: "cover", kind: Image, sizing: 'constrain', style: "width:300px; height:300px" },
 			{ fit: true, components:[
 				{ kind: Divider, content: 'Title' },
 				{ name: 'title', kind: BodyText, content: ''},
@@ -104,6 +104,8 @@ module.exports = kind({
 
 		this._update = this.bindSafely(this.update);
 		//this.app.store.on('change', this._update);
+
+		// Add even listener to each store.
 		WebStore.on('change', this._update);
 		ImageStore.on('change', this._update);
 		BookStore.on('change', this._update);
@@ -124,7 +126,7 @@ module.exports = kind({
 			break;
 
 			case 'Image':
-				this.$.thumbnail.set('src', data[0].thumbnail)
+				this.$.thumbnail.set('src', data[0].image)
 				this.$.title.set('content', data[0].title);
 				this.$.url.set('content', data[0].link);
 				this.$.pubDate.set('content', data[0].pubDate);
