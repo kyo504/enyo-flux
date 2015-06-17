@@ -25,8 +25,6 @@ module.exports = kind({
 	view: MainView,
 
 	create: function() {
-		this.store = WebStore;
-
 		this.inherited(arguments);
 
 		// If we want to fetch data at launch time...
