@@ -51,7 +51,7 @@ root - assets
           - views       
 ```
 
-### Store 생성
+### Store
 
 검색 카테고리별로 별도의 Store를 가지며 각 Store는 CoreStore를 상속받아서 확장하는 형태로 되어 있습니다. 먼저 CoreStore를 살펴봅시다. CoreStore는 Enyo의 CoreObject를 상속하며 instance에 대한 고유 ID 부여를 위해 id 송성을 가집니다. 그리고 dispatcher로부터 notify를 받았을 때 view로 change event를 전달하기 위해서 EvenEmitter를 mixin으로 사용합니다. contructor 함수에서는 dispatcher로 부터 id를 부여받은 다음에 현재 store에 대해서 update함수를 subscribe를 걸어서 변경 사항이 발생할때 noti를 받을 수 있도록 합니다.
 
@@ -100,7 +100,7 @@ var WebStore = kind({
 module.exports = new WebStore();
 ```
 
-### ActionCreator 생성
+### ActionCreator
 
 ActionCreator 에서는 먼저 back-end와 communication을 하기 위한 Source를 생성하고 enyo의 source 목록에 추가합니다.  ActionCreator는 fetch 함수를 통해서 검색을 요청한 후에 등록된 callback을 통해서 검색결과를 받습니다. 그리고 dispatcher를 통해서 이 결과를 Action 타입과 함께 Store에 notify를 보냅니다.
 
@@ -133,7 +133,7 @@ module.exports = {
 }
 ```
 
-### View 생성
+### View
 
 View에서 중요한 부분은 세 가지 입니다.
 
