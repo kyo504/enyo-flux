@@ -4,7 +4,7 @@
 
 이 애플리케이션은 Enyo 2.6을 기반으로하여 Flux 패턴을 적용한 샘플입니다.
 
-## Flux 애플리케이 구조란 무엇인가
+## Flux 애플리케이션 구조란 무엇인가
 
 Flux는 Facebook이 Javascript 애플리케이션을 만들기 위해서 사용하는 애플리케이션 구조입니다. Flux는 단방향 데이터 흐름에 기반하고 있습니다.
 
@@ -33,4 +33,12 @@ dispatcher() 함수는 callback을 통해서 간단하고 동기적인 반복 �
 하지만 Circular 의존성이 있다면 문제가 됩니다. 즉, Store A가 Store B를 기다려야 하고 Store B가 Store A를 기다려야 한다면 무한 루프 빠지게 됩니다. 현재 버전의 Flux에서 Dispatcher는 이를 문제가 발생 때 개발자에게 경고를 전달함으로써 미연에 방지하도록 합니다. 이 경우에 개발자는 세 번째 Store를 만들어서 Circular 의존성을 해결할 수 있습니다.
 
 ## Enyo에서는 Flux를 어떻게 이용할까
+
+### Store 생성
+
+### ActionCreator 생성
+
+### View 생성
+
+
 
