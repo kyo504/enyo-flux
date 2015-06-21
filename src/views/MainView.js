@@ -102,13 +102,10 @@ module.exports = kind({
 		// Why we don't need this?
 		//this.subscriptionID = FluxDispatcher.subscribe(this.app.store.id, utils.bind(this, this.update));
 
-		this._update = this.bindSafely(this.update);
-		//this.app.store.on('change', this._update);
-
 		// Add even listener to each store.
-		WebStore.on('change', this._update);
-		ImageStore.on('change', this._update);
-		BookStore.on('change', this._update);
+		WebStore.addChangeListener(this.bindSafely(this.update));
+		ImageStore.addChangeListener(this.bindSafely(this.update));
+		BookStore.addChangeListener(this.bindSafely(this.update));
 
 		this.$.scroller.createComponent(webContainer, {owner: this});
 	},
@@ -166,7 +163,7 @@ module.exports = kind({
 				currentStore = WebStore;
 		}
 
-		actionCreator.fetch(this.app.store, type, inSender.value);
+		actionCreator.fetch(currentStore, type, inSender.value);
 	},
 
 	searchTypeChanged: function(inSender, inEvent) {

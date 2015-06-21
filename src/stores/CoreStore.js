@@ -8,6 +8,8 @@ var
 var
 	actionConstants = require('../constants/actionConstants');
 
+var CHANGE_EVENT = 'change';
+
 module.exports = kind({
 	name: 'myapp.FluxStore',
 
@@ -26,13 +28,33 @@ module.exports = kind({
 	constructor: kind.inherit(function (sup) {
 		return function () {
 			sup.apply(this, arguments);
-			//id the store with the dispatcher
+
+			// get unique store id from dispatcher
 			this.id = FluxDispatcher.subscribe();
 
-			//if the store has an update method, subscribe to payload updates
-			if(this.update) this.updateID = FluxDispatcher.subscribe(this.id, utils.bindSafely(this, this.update));
+			// if the store has an update method, subscribe to payload updates
+			if(this.update) 
+				FluxDispatcher.subscribe(this.id, utils.bindSafely(this, this.update));
 
 			this._data = {};
 		};
 	}),
+
+	/**
+	* Add a callback fuction to this store
+	* @param {function} callback
+	* @public
+	*/
+	addChangeListener: function(callback) {
+		this.on(CHANGE_EVENT, callback);
+	},
+
+	/**
+	* Remove a callback fuction from this store
+	* @param {function} callback
+	* @public
+	*/
+	removeChangeListener: function(callback) {
+		this.off(CHANGE_EVENT, callback);
+	},
 });
